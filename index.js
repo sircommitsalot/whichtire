@@ -1,11 +1,31 @@
-const svg = document.getElementById('svg');
-const ctx = svg.getContext('2d');
+const canvas = document.getElementById('canvas');
 
-const centroidX = svg.width / 2;
-const centroidY = svg.height / 2;
+const styles = getComputedStyle(canvas.parentElement);
+const w = parseInt(styles.getPropertyValue("width"), 10);
+const h = parseInt(styles.getPropertyValue("height"), 10);
+
+canvas.width = w;
+canvas.height = h;
+
+const ctx = canvas.getContext('2d');
+
+const centroidX = canvas.width / 2;
+const centroidY = canvas.height / 2;
 const startRadius = (centroidX - ctx.lineWidth) / 2;
 const startAngle = Math.PI * 0.5;
 const endAngle = Math.PI * 2.5;
+
+const tireFlatWidth = startRadius * 2 * Math.PI;
+
+const scaleFactor = 110.2 / tireFlatWidth;
+
+const tireFlatWidthEl = document.getElementById('tire-flat-width');
+tireFlatWidthEl.value = tireFlatWidth * scaleFactor;
+tireFlatWidthEl.disabled = true;
+
+const rimWidthEl = document.getElementById('rim-width');
+const tireWidthEl = document.getElementById('tire-width');
+const tireHeightEl = document.getElementById('tire-height');
 
 const renderCenterPoint = () => {
   ctx.beginPath();
@@ -28,13 +48,21 @@ const renderVirtualTireBottom = (radius, angleOffset) => {
   ctx.stroke();
 }
 
-const render = (sliderPercentage = 0) => {
-  const angleOffset = sliderPercentage * Math.PI / 2;
-  const chordLength = sliderPercentage * svg.width;
-  const radiusContribution = chordLength / 4;
-  const radius = startRadius + radiusContribution;
+const render = (chord = 0) => {
+  const scaledChord = chord / scaleFactor;
+  const halfChord = scaledChord / 2;
+  const radius = startRadius + halfChord / 2;
   
-  ctx.clearRect(0, 0, svg.width, svg.height);
+  const diameter = radius * 2;
+  const sagitta = radius - Math.sqrt(radius * radius - halfChord * halfChord);
+  const tireHeight = diameter - sagitta;
+  
+  tireWidthEl.innerText = String((diameter * scaleFactor).toFixed(2));
+  tireHeightEl.innerText = String((tireHeight * scaleFactor).toFixed(2));
+  
+  const angleOffset = scaledChord / canvas.width * Math.PI / 2;
+  
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
   renderCenterPoint();
   renderTireAndRim(radius, angleOffset);
   renderVirtualTireBottom(radius, angleOffset);
@@ -42,8 +70,8 @@ const render = (sliderPercentage = 0) => {
 
 const handleSliderInput = e => {
   const val = e.target.value;
-  render(val / 100);
+  render(val);
 }
 
-document.getElementById('range').addEventListener('input', handleSliderInput);
-render();
+document.getElementById('rim-width').addEventListener('input', handleSliderInput);
+render(rimWidthEl.value);
