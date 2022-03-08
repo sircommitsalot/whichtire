@@ -23,7 +23,7 @@ const renderTireAndRim = (radius, angleOffset) => {
 
 const renderVirtualTireBottom = (radius, angleOffset) => {
   ctx.beginPath();
-  ctx.setLineDash([5, 15]);
+  ctx.setLineDash([1, 2]);
   ctx.arc(centroidX, centroidY, radius, startAngle + angleOffset, endAngle - angleOffset, true);
   ctx.stroke();
 }
