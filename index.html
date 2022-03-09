@@ -2,25 +2,27 @@
 <html>
   <head>
     <link rel="stylesheet" href="styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   </head>
   <body>
-    <div id="rendering">
+    <div id="diagram">
       <canvas id="canvas" width="500" height="500"></canvas>
     </div>
-    <div id="form">
+    <div id="sidebar">
       <div>
         <label>
           Rim Width:
           <div class="single-line">
             <input id="rim-width" type="number" step="0.1" min="0" value="18">mm
           </div>
+          <input id="rim-width-slider" type="range" step="0.1" min="0" value="18">
         </label>
       </div>
       <div>
         <label>
           Tire Flat Width:
           <div class="single-line">
-            <input id="tire-flat-width" type="number" step="0.1">mm
+            <input id="tire-flat-width" type="number">mm
           </div>
         </label>
       </div>

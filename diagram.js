@@ -1,26 +1,41 @@
 const canvas = document.getElementById('canvas');
 
-const styles = getComputedStyle(canvas.parentElement);
-const smallDimension = Math.min(
-  parseInt(styles.getPropertyValue('width'), 10),
-  parseInt(styles.getPropertyValue('height'), 10),
-);
-
-canvas.width = smallDimension;
-canvas.height = smallDimension;
-
 const ctx = canvas.getContext('2d');
 
-const centroidX = canvas.width / 2;
-const centroidY = canvas.height / 2;
+let centroidX;
+let centroidY;
 const startAngle = Math.PI * 0.5;
 const endAngle = Math.PI * 2.5;
 
-export const canvasRadius = (centroidX - ctx.lineWidth) / 2;
+export const sizeCanvas = (sidebar, isVertical) => {
+  const styles = getComputedStyle(canvas.parentElement.parentElement);
+  let width = parseInt(styles.getPropertyValue('width'), 10);
+  let height = parseInt(styles.getPropertyValue('height'), 10);
+  
+  if (isVertical) {
+    height = height - sidebar.offsetHeight;
+  } else {
+    width = width - sidebar.offsetWidth;
+  }
+  
+  const smallDimension = Math.min(width, height);
+  
+  canvas.width = smallDimension;
+  canvas.height = smallDimension;
+  
+  centroidX = canvas.width / 2;
+  centroidY = canvas.height / 2;
+}
+
+window.addEventListener('resize', sizeCanvas);
+
+export const getCanvasRadius = () => {
+  return (centroidX - ctx.lineWidth) / 2;
+}
 
 const renderCenterPoint = () => {
   ctx.beginPath();
-  ctx.arc(centroidX, centroidY, canvasRadius / 100, 0, Math.PI * 2);
+  ctx.arc(centroidX, centroidY, getCanvasRadius() / 100, 0, Math.PI * 2);
   ctx.fill();
 }
 

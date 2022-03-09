@@ -9,7 +9,6 @@ const calculateTireDimensions = ({ tireFlatWidth, rimWidth }) => {
   const radius = minRadius + halfChord / 2;
   
   const diameter = radius * 2;
-  console.log({ radius, halfChord })
   const sagitta = radius - (Math.sqrt(radius * radius - halfChord * halfChord) || 0);
   return {
     minRadius,

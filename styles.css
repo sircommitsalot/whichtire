@@ -8,16 +8,25 @@ body {
     margin: 0;
 }
 
-#rendering {
+body.vertical {
+    flex-direction: column;
+}
+
+#diagram {
     flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-#form {
+#sidebar {
     flex: 0;
     padding: 10px;
+    border-left: 1px solid black;
+}
+
+.vertical #sidebar {
+    border-top: 1px solid black;
 }
 
 .single-line {
