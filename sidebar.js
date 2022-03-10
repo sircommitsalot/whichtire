@@ -5,7 +5,7 @@ export const tireFlatWidthEl = document.getElementById('tire-flat-width');
 export const rimWidthEl = document.getElementById('rim-width');
 export const rimWidthSlider = document.getElementById('rim-width-slider');
 
-tireFlatWidthEl.value = 110;
+tireFlatWidthEl.value = 110.2;
 tireFlatWidthEl.disabled = true;
 
 const max = tireFlatWidthEl.value / Math.PI * 2;
