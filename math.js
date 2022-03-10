@@ -7,7 +7,7 @@ const calculateTireDimensions = ({ tireFlatWidth, rimWidth }) => {
   const uncorrectedRadius = minRadius + halfChord / 2;
   const radius = correctRadius({ chord: rimWidth, arc: tireFlatWidth, radius: uncorrectedRadius });
   const diameter = radius * 2;
-  const sagitta = uncorrectedRadius - (Math.sqrt(radius * radius - halfChord * halfChord) || 0);
+  const sagitta = radius - (Math.sqrt(radius * radius - halfChord * halfChord) || 0);
   return {
     minRadius,
     radius,
