@@ -1,19 +1,46 @@
 const RADIUS_ERROR_CORRECTION_ATTEMPTS = 100;
 
-const calculateTireDimensions = ({ tireArcLength, rimWidth }) => {
-  // Radius of the tire when rim size is 0
-  const minRadius = tireArcLength / Math.PI / 2;
+const getMinRadius = tireArcLength => {
+  return tireArcLength / Math.PI / 2;
+}
+
+const getHeight = (diameter, radius, halfChord) => {
+  return diameter - (radius - (Math.sqrt(radius * radius - halfChord * halfChord) || 0))
+}
+
+const fromArcLength = (rimWidth, tireArcLength) => {
+  const minRadius = getMinRadius(tireArcLength);
   const halfChord = rimWidth / 2;
-  const uncorrectedRadius = minRadius + halfChord / 2;
-  const radius = correctRadius({ chord: rimWidth, arc: tireArcLength, radius: uncorrectedRadius });
+  const estimatedRadius = minRadius + halfChord / 2;
+  const radius = correctRadius({ chord: rimWidth, arc: tireArcLength, radius: estimatedRadius });
   const diameter = radius * 2;
-  const sagitta = radius - (Math.sqrt(radius * radius - halfChord * halfChord) || 0);
   return {
     minRadius,
-    radius,
+    arcLength: tireArcLength,
     diameter,
-    height: diameter - sagitta,
+    radius,
+    height: getHeight(diameter, radius, halfChord),
   }
+}
+
+const fromWidth = (rimWidth, tireWidth) => {
+  const radius = tireWidth / 2;
+  const circumference = tireWidth * Math.PI;
+  const arcLength = circumference - tireWidth * Math.asin(rimWidth / tireWidth);
+  return {
+    minRadius: getMinRadius(arcLength),
+    arcLength,
+    diameter: tireWidth,
+    radius: tireWidth / 2,
+    height: getHeight(tireWidth, radius, rimWidth / 2),
+  }
+}
+
+const calculateTireDimensions = ({ rimWidth, tireArcLength = undefined, tireWidth = undefined }) => {
+  if (tireWidth === undefined) {
+    return fromArcLength(rimWidth, tireArcLength);
+  }
+  return fromWidth(rimWidth, tireWidth);
 }
 
 const correctRadius = ({ chord, arc, radius, attempt = 0 }) => {

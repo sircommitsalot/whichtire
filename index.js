@@ -1,17 +1,21 @@
 import calculateTireDimensions from './math.js';
-import renderSidebar, { tireFlatWidthEl, rimWidthEl, rimWidthSlider, sidebar } from './sidebar.js';
+import renderSidebar, { tireFlatWidthEl, rimWidthEl, tireWidthEl, rimWidthSlider, sidebar } from './sidebar.js';
 import renderDiagram, { getCanvasRadius, sizeCanvas } from './diagram.js';
 
-const render = () => {
+const render = ({
+  tireArcLength,
+  tireWidth,
+}) => {
   const rimWidth = parseFloat(rimWidthEl.value);
-  const tireArcLength = parseFloat(tireFlatWidthEl.value);
   const {
     diameter,
     minRadius,
     radius,
     height,
+    arcLength,
   } = calculateTireDimensions({
     rimWidth,
+    tireWidth,
     tireArcLength,
   });
   const canvasRadius = getCanvasRadius();
@@ -19,6 +23,7 @@ const render = () => {
   renderSidebar({
     diameter,
     height,
+    arcLength,
   });
   renderDiagram({
     radius,
@@ -35,18 +40,27 @@ const handleResize = () => {
     document.body.classList.remove('vertical');
   }
   sizeCanvas(sidebar, isVertical);
-  render(rimWidthEl.value);
+  render({ tireWidth: parseFloat(tireWidthEl.value) });
 };
 
 const handleRimWidthInput = e => {
   const rimWidth = e.target.value;
   rimWidthEl.value = rimWidth;
   rimWidthSlider.value = rimWidth;
-  render();
+  render({ tireWidth: parseFloat(tireWidthEl.value) });
 };
+
+const handleTireWidthInput = e => {
+  render({ tireWidth: parseFloat(e.target.value) });
+}
+
+const handleTireArcLengthInput = e => {
+  render({ tireArcLength: parseFloat(e.target.value) });
+}
 
 window.addEventListener('resize', handleResize);
 rimWidthEl.addEventListener('input', handleRimWidthInput);
 rimWidthSlider.addEventListener('input', handleRimWidthInput);
-tireFlatWidthEl.addEventListener('input', render);
+tireFlatWidthEl.addEventListener('input', handleTireArcLengthInput);
+tireWidthEl.addEventListener('input', handleTireWidthInput);
 handleResize();
