@@ -9,30 +9,36 @@
       <canvas id="canvas" width="500" height="500"></canvas>
     </div>
     <div id="sidebar">
-      <div>
+      <fieldset>
+        <legend>
+          Rim
+        </legend>
         <label>
-          Rim Width:
+          Width
           <div class="single-line">
             <input id="rim-width" type="number" step="0.1" min="0" value="18">mm
           </div>
           <input id="rim-width-slider" type="range" step="0.1" min="0" value="18">
         </label>
-      </div>
-      <div>
+      </fieldset>
+      <fieldset>
+        <legend>Tire</legend>
         <label>
-          Tire Flat Width:
+          Width
           <div class="single-line">
-            <input id="tire-flat-width" type="number">mm
+            <input disabled id="tire-width" type="number" step="0.1" min="0" value="41.01">mm
           </div>
         </label>
-      </div>
-      <hr />
-      <div>
-        Tire Width: <span id="tire-width"></span>mm
-      </div>
-      <div>
-        Tire Height: <span id="tire-height"></span>mm
-      </div>
+        <label>
+          Arc Length
+          <div class="single-line">
+            <input id="tire-flat-width" type="number" step="0.1" min="0" value="110.2">mm
+          </div>
+        </label>
+        <div>
+          Height: <span id="tire-height"></span>mm
+        </div>
+      </fieldset>
     </div>
   </body>
   <script type="module" src="index.js"></script>

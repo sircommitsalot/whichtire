@@ -1,11 +1,11 @@
 const RADIUS_ERROR_CORRECTION_ATTEMPTS = 100;
 
-const calculateTireDimensions = ({ tireFlatWidth, rimWidth }) => {
+const calculateTireDimensions = ({ tireArcLength, rimWidth }) => {
   // Radius of the tire when rim size is 0
-  const minRadius = tireFlatWidth / Math.PI / 2;
+  const minRadius = tireArcLength / Math.PI / 2;
   const halfChord = rimWidth / 2;
   const uncorrectedRadius = minRadius + halfChord / 2;
-  const radius = correctRadius({ chord: rimWidth, arc: tireFlatWidth, radius: uncorrectedRadius });
+  const radius = correctRadius({ chord: rimWidth, arc: tireArcLength, radius: uncorrectedRadius });
   const diameter = radius * 2;
   const sagitta = radius - (Math.sqrt(radius * radius - halfChord * halfChord) || 0);
   return {

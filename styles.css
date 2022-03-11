@@ -22,14 +22,20 @@ body.vertical {
 #sidebar {
     flex: 0;
     padding: 10px;
-    border-left: 1px solid black;
 }
 
 .vertical #sidebar {
-    border-top: 1px solid black;
+    display: flex;
 }
 
 .single-line {
     display: flex;
     align-items: flex-end;
+}
+
+@media (max-width: 500px) {
+    #sidebar {
+        display: flex;
+        flex-direction: column;
+    }
 }
